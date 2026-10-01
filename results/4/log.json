@@ -1,0 +1,173 @@
+{
+  "problem_id": "4",
+  "description": "Write a function to find the largest integers from a given list of numbers using heap queue algorithm.",
+  "steps": [
+    {
+      "agent": "code_generator",
+      "llm_call": {
+        "request": {
+          "model": "cohere/north-mini-code:free",
+          "temperature": 0.2,
+          "max_tokens": 1200,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a Python programmer. Given a problem description, write a single self-contained Python function that solves it. Output ONLY the function inside a ```python fenced code block, with no explanation, no example usage, and no extra top-level code."
+            },
+            {
+              "role": "user",
+              "content": "Write a function to find the largest integers from a given list of numbers using heap queue algorithm."
+            }
+          ],
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "response_text": "```python\nimport heapq\n\ndef largest_numbers(nums, k):\n    \"\"\"\n    Return the k largest integers from the list nums using a heap queue algorithm.\n\n    Args:\n        nums (list): List of integers.\n        k (int): Number of largest elements to return.\n\n    Returns:\n        list: The k largest integers in descending order.\n    \"\"\"\n    if k <= 0:\n        return []\n    if k >= len(nums):\n        return sorted(nums, reverse=True)\n    \n    # Use a min-heap of size k to keep track of the k largest elements\n    heap = nums[:k]\n    heapq.heapify(heap)\n    \n    for num in nums[k:]:\n        if num > heap[0]:\n            heapq.heapreplace(heap, num)\n    \n    # Return the heap elements sorted in descending order\n    return sorted(heap, reverse=True)\n```",
+        "raw_response": {
+          "id": "gen-1790834532-2WG1qmMk54sYkHRcM2Om",
+          "object": "chat.completion",
+          "created": 1790834532,
+          "model": "cohere/north-mini-code:free",
+          "provider": "Cohere",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "complete",
+              "message": {
+                "role": "assistant",
+                "content": "```python\nimport heapq\n\ndef largest_numbers(nums, k):\n    \"\"\"\n    Return the k largest integers from the list nums using a heap queue algorithm.\n\n    Args:\n        nums (list): List of integers.\n        k (int): Number of largest elements to return.\n\n    Returns:\n        list: The k largest integers in descending order.\n    \"\"\"\n    if k <= 0:\n        return []\n    if k >= len(nums):\n        return sorted(nums, reverse=True)\n    \n    # Use a min-heap of size k to keep track of the k largest elements\n    heap = nums[:k]\n    heapq.heapify(heap)\n    \n    for num in nums[k:]:\n        if num > heap[0]:\n            heapq.heapreplace(heap, num)\n    \n    # Return the heap elements sorted in descending order\n    return sorted(heap, reverse=True)\n```",
+                "refusal": null,
+                "reasoning": null
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 68,
+            "completion_tokens": 174,
+            "total_tokens": 242,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "agent": "test_generator",
+      "llm_call": {
+        "request": {
+          "model": "cohere/north-mini-code:free",
+          "temperature": 0.4,
+          "max_tokens": 1200,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a software test engineer practicing coverage-based unit testing. Given a Python function, write pytest test cases that together cover every statement, every branch (if/else) and every loop path (zero iterations, one iteration, multiple iterations where applicable) in the function. Import the function with `from solution import largest_numbers`. Use at most 8 test functions total, and do not repeat near-identical cases - pick the minimum set of inputs needed for full coverage. Output ONLY the test file contents inside a single ```python fenced code block, with no explanation."
+            },
+            {
+              "role": "user",
+              "content": "Problem description:\nWrite a function to find the largest integers from a given list of numbers using heap queue algorithm.\n\nFunction under test:\n```python\nimport heapq\n\ndef largest_numbers(nums, k):\n    \"\"\"\n    Return the k largest integers from the list nums using a heap queue algorithm.\n\n    Args:\n        nums (list): List of integers.\n        k (int): Number of largest elements to return.\n\n    Returns:\n        list: The k largest integers in descending order.\n    \"\"\"\n    if k <= 0:\n        return []\n    if k >= len(nums):\n        return sorted(nums, reverse=True)\n    \n    # Use a min-heap of size k to keep track of the k largest elements\n    heap = nums[:k]\n    heapq.heapify(heap)\n    \n    for num in nums[k:]:\n        if num > heap[0]:\n            heapq.heapreplace(heap, num)\n    \n    # Return the heap elements sorted in descending order\n    return sorted(heap, reverse=True)\n```"
+            }
+          ],
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "response_text": "```python\nimport pytest\nfrom solution import largest_numbers\n\ndef test_k_zero():\n    assert largest_numbers([1, 2, 3], 0) == []\n\ndef test_k_greater_equal_len():\n    assert largest_numbers([1, 2, 3], 5) == [3, 2, 1]\n    assert largest_numbers([5, -1, 2], 3) == [5, 2, -1]\n\ndef test_normal_case_single_k():\n    assert largest_numbers([1, 2, 3], 1) == [3]\n\ndef test_normal_case_multiple_k():\n    assert largest_numbers([3, 1, 4, 1, 5, 9, 2, 6], 3) == [9, 6, 5]\n\ndef test_all_equal():\n    assert largest_numbers([7, 7, 7, 7], 2) == [7, 7]\n\ndef test_negative_numbers():\n    assert largest_numbers([-5, -2, -9, -1], 2) == [-1, -2]\n\ndef test_mixed_numbers():\n    assert largest_numbers([-1, 0, 1, -2, 2], 3) == [2, 1, 0]\n\ndef test_k_equals_len():\n    assert largest_numbers([10, 20, 30], 3) == [30, 20, 10]\n```",
+        "raw_response": {
+          "id": "gen-1790834534-XuG6PJMRGUlZGBxP2TLh",
+          "object": "chat.completion",
+          "created": 1790834534,
+          "model": "cohere/north-mini-code:free",
+          "provider": "Cohere",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "complete",
+              "message": {
+                "role": "assistant",
+                "content": "```python\nimport pytest\nfrom solution import largest_numbers\n\ndef test_k_zero():\n    assert largest_numbers([1, 2, 3], 0) == []\n\ndef test_k_greater_equal_len():\n    assert largest_numbers([1, 2, 3], 5) == [3, 2, 1]\n    assert largest_numbers([5, -1, 2], 3) == [5, 2, -1]\n\ndef test_normal_case_single_k():\n    assert largest_numbers([1, 2, 3], 1) == [3]\n\ndef test_normal_case_multiple_k():\n    assert largest_numbers([3, 1, 4, 1, 5, 9, 2, 6], 3) == [9, 6, 5]\n\ndef test_all_equal():\n    assert largest_numbers([7, 7, 7, 7], 2) == [7, 7]\n\ndef test_negative_numbers():\n    assert largest_numbers([-5, -2, -9, -1], 2) == [-1, -2]\n\ndef test_mixed_numbers():\n    assert largest_numbers([-1, 0, 1, -2, 2], 3) == [2, 1, 0]\n\ndef test_k_equals_len():\n    assert largest_numbers([10, 20, 30], 3) == [30, 20, 10]\n```",
+                "refusal": null,
+                "reasoning": null
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 313,
+            "completion_tokens": 303,
+            "total_tokens": 616,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "agent": "test_executor",
+      "verdict": {
+        "problem_id": "4",
+        "passed": true,
+        "returncode": 0,
+        "stdout": "........                                                                 [100%]\n8 passed in 0.03s\n",
+        "stderr": "",
+        "coverage_percent": 100.0,
+        "branch_coverage_percent": 100.0,
+        "missing_lines": [],
+        "missing_branches": []
+      }
+    }
+  ],
+  "final_code": "import heapq\n\ndef largest_numbers(nums, k):\n    \"\"\"\n    Return the k largest integers from the list nums using a heap queue algorithm.\n\n    Args:\n        nums (list): List of integers.\n        k (int): Number of largest elements to return.\n\n    Returns:\n        list: The k largest integers in descending order.\n    \"\"\"\n    if k <= 0:\n        return []\n    if k >= len(nums):\n        return sorted(nums, reverse=True)\n    \n    # Use a min-heap of size k to keep track of the k largest elements\n    heap = nums[:k]\n    heapq.heapify(heap)\n    \n    for num in nums[k:]:\n        if num > heap[0]:\n            heapq.heapreplace(heap, num)\n    \n    # Return the heap elements sorted in descending order\n    return sorted(heap, reverse=True)",
+  "final_tests": "import pytest\nfrom solution import largest_numbers\n\ndef test_k_zero():\n    assert largest_numbers([1, 2, 3], 0) == []\n\ndef test_k_greater_equal_len():\n    assert largest_numbers([1, 2, 3], 5) == [3, 2, 1]\n    assert largest_numbers([5, -1, 2], 3) == [5, 2, -1]\n\ndef test_normal_case_single_k():\n    assert largest_numbers([1, 2, 3], 1) == [3]\n\ndef test_normal_case_multiple_k():\n    assert largest_numbers([3, 1, 4, 1, 5, 9, 2, 6], 3) == [9, 6, 5]\n\ndef test_all_equal():\n    assert largest_numbers([7, 7, 7, 7], 2) == [7, 7]\n\ndef test_negative_numbers():\n    assert largest_numbers([-5, -2, -9, -1], 2) == [-1, -2]\n\ndef test_mixed_numbers():\n    assert largest_numbers([-1, 0, 1, -2, 2], 3) == [2, 1, 0]\n\ndef test_k_equals_len():\n    assert largest_numbers([10, 20, 30], 3) == [30, 20, 10]",
+  "final_verdict": {
+    "problem_id": "4",
+    "passed": true,
+    "returncode": 0,
+    "stdout": "........                                                                 [100%]\n8 passed in 0.03s\n",
+    "stderr": "",
+    "coverage_percent": 100.0,
+    "branch_coverage_percent": 100.0,
+    "missing_lines": [],
+    "missing_branches": []
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "problem_id": "3",
+  "description": "Write a python function to identify non-prime numbers.",
+  "steps": [
+    {
+      "agent": "code_generator",
+      "llm_call": {
+        "request": {
+          "model": "cohere/north-mini-code:free",
+          "temperature": 0.2,
+          "max_tokens": 1200,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a Python programmer. Given a problem description, write a single self-contained Python function that solves it. Output ONLY the function inside a ```python fenced code block, with no explanation, no example usage, and no extra top-level code."
+            },
+            {
+              "role": "user",
+              "content": "Write a python function to identify non-prime numbers."
+            }
+          ],
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "response_text": "```python\ndef is_non_prime(n):\n    if n <= 1:\n        return True\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0:\n            return True\n    return False\n```",
+        "raw_response": {
+          "id": "gen-1790834525-zGHhs7DczPh5Tzbgdi78",
+          "object": "chat.completion",
+          "created": 1790834525,
+          "model": "cohere/north-mini-code:free",
+          "provider": "Cohere",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "complete",
+              "message": {
+                "role": "assistant",
+                "content": "```python\ndef is_non_prime(n):\n    if n <= 1:\n        return True\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0:\n            return True\n    return False\n```",
+                "refusal": null,
+                "reasoning": null
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 59,
+            "completion_tokens": 57,
+            "total_tokens": 116,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "agent": "test_generator",
+      "llm_call": {
+        "request": {
+          "model": "cohere/north-mini-code:free",
+          "temperature": 0.4,
+          "max_tokens": 1200,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a software test engineer practicing coverage-based unit testing. Given a Python function, write pytest test cases that together cover every statement, every branch (if/else) and every loop path (zero iterations, one iteration, multiple iterations where applicable) in the function. Import the function with `from solution import is_non_prime`. Use at most 8 test functions total, and do not repeat near-identical cases - pick the minimum set of inputs needed for full coverage. Output ONLY the test file contents inside a single ```python fenced code block, with no explanation."
+            },
+            {
+              "role": "user",
+              "content": "Problem description:\nWrite a python function to identify non-prime numbers.\n\nFunction under test:\n```python\ndef is_non_prime(n):\n    if n <= 1:\n        return True\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0:\n            return True\n    return False\n```"
+            }
+          ],
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "response_text": "```python\nfrom solution import is_non_prime\nimport pytest\n\ndef test_n_leq_1():\n    assert is_non_prime(1) is True\n    assert is_non_prime(0) is True\n    assert is_non_prime(-5) is True\n\ndef test_prime_number():\n    assert is_non_prime(2) is False\n    assert is_non_prime(3) is False\n    assert is_non_prime(13) is False\n\ndef test_composite_small():\n    assert is_non_prime(4) is True\n    assert is_non_prime(9) is True\n    assert is_non_prime(15) is True\n\ndef test_composite_larger():\n    assert is_non_prime(25) is True\n    assert is_non_prime(49) is True\n\ndef test_edge_square_root():\n    assert is_non_prime(16) is True  # sqrt = 4, divisor found\n    assert is_non_prime(36) is True  # sqrt = 6, divisor found\n\ndef test_prime_large():\n    assert is_non_prime(97) is False\n    assert is_non_prime(101) is False\n\ndef test_composite_large():\n    assert is_non_prime(100) is True\n    assert is_non_prime(121) is True\n\ndef test_zero_iterations():\n    # n = 2, range(2, int(sqrt(2))+1) -> range(2,2) empty\n    assert is_non_prime(2) is False\n    # n = 3, range(2, int(sqrt(3))+1) -> range(2,2) empty\n    assert is_non_prime(3) is False\n```",
+        "raw_response": {
+          "id": "gen-1790834526-rZfIAZ2Fy4s4ODD9h6ZV",
+          "object": "chat.completion",
+          "created": 1790834526,
+          "model": "cohere/north-mini-code:free",
+          "provider": "Cohere",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "complete",
+              "message": {
+                "role": "assistant",
+                "content": "```python\nfrom solution import is_non_prime\nimport pytest\n\ndef test_n_leq_1():\n    assert is_non_prime(1) is True\n    assert is_non_prime(0) is True\n    assert is_non_prime(-5) is True\n\ndef test_prime_number():\n    assert is_non_prime(2) is False\n    assert is_non_prime(3) is False\n    assert is_non_prime(13) is False\n\ndef test_composite_small():\n    assert is_non_prime(4) is True\n    assert is_non_prime(9) is True\n    assert is_non_prime(15) is True\n\ndef test_composite_larger():\n    assert is_non_prime(25) is True\n    assert is_non_prime(49) is True\n\ndef test_edge_square_root():\n    assert is_non_prime(16) is True  # sqrt = 4, divisor found\n    assert is_non_prime(36) is True  # sqrt = 6, divisor found\n\ndef test_prime_large():\n    assert is_non_prime(97) is False\n    assert is_non_prime(101) is False\n\ndef test_composite_large():\n    assert is_non_prime(100) is True\n    assert is_non_prime(121) is True\n\ndef test_zero_iterations():\n    # n = 2, range(2, int(sqrt(2))+1) -> range(2,2) empty\n    assert is_non_prime(2) is False\n    # n = 3, range(2, int(sqrt(3))+1) -> range(2,2) empty\n    assert is_non_prime(3) is False\n```",
+                "refusal": null,
+                "reasoning": null
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 188,
+            "completion_tokens": 343,
+            "total_tokens": 531,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "agent": "test_executor",
+      "verdict": {
+        "problem_id": "3",
+        "passed": true,
+        "returncode": 0,
+        "stdout": "........                                                                 [100%]\n8 passed in 0.03s\n",
+        "stderr": "",
+        "coverage_percent": 100.0,
+        "branch_coverage_percent": 100.0,
+        "missing_lines": [],
+        "missing_branches": []
+      }
+    }
+  ],
+  "final_code": "def is_non_prime(n):\n    if n <= 1:\n        return True\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0:\n            return True\n    return False",
+  "final_tests": "from solution import is_non_prime\nimport pytest\n\ndef test_n_leq_1():\n    assert is_non_prime(1) is True\n    assert is_non_prime(0) is True\n    assert is_non_prime(-5) is True\n\ndef test_prime_number():\n    assert is_non_prime(2) is False\n    assert is_non_prime(3) is False\n    assert is_non_prime(13) is False\n\ndef test_composite_small():\n    assert is_non_prime(4) is True\n    assert is_non_prime(9) is True\n    assert is_non_prime(15) is True\n\ndef test_composite_larger():\n    assert is_non_prime(25) is True\n    assert is_non_prime(49) is True\n\ndef test_edge_square_root():\n    assert is_non_prime(16) is True  # sqrt = 4, divisor found\n    assert is_non_prime(36) is True  # sqrt = 6, divisor found\n\ndef test_prime_large():\n    assert is_non_prime(97) is False\n    assert is_non_prime(101) is False\n\ndef test_composite_large():\n    assert is_non_prime(100) is True\n    assert is_non_prime(121) is True\n\ndef test_zero_iterations():\n    # n = 2, range(2, int(sqrt(2))+1) -> range(2,2) empty\n    assert is_non_prime(2) is False\n    # n = 3, range(2, int(sqrt(3))+1) -> range(2,2) empty\n    assert is_non_prime(3) is False",
+  "final_verdict": {
+    "problem_id": "3",
+    "passed": true,
+    "returncode": 0,
+    "stdout": "........                                                                 [100%]\n8 passed in 0.03s\n",
+    "stderr": "",
+    "coverage_percent": 100.0,
+    "branch_coverage_percent": 100.0,
+    "missing_lines": [],
+    "missing_branches": []
+  }
+}
