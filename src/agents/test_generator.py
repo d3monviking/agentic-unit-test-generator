@@ -37,35 +37,6 @@ def generate(code: str, func_name: str, problem_description: str) -> dict:
     return {"tests": tests, "llm_call": llm_call}
 
 
-FIX_ASSERTIONS_SYSTEM_PROMPT = (
-    "You previously wrote pytest tests for a function. The function has been "
-    "independently verified as CORRECT against the official reference "
-    "solution, so the failing assertions below have wrong hand-computed "
-    "expected values, not a code bug. Each failing assertion line (e.g. "
-    "`assert 5 == 7`) already shows the function's real actual output on the "
-    "left (5) and your wrong expected value on the right (7). Fix only "
-    "those expected values to match the actual output shown - do not change "
-    "anything else, and do not recompute the function's logic yourself. "
-    "Output ONLY the full, corrected test file inside a single ```python "
-    "fenced code block, with no explanation."
-)
-
-
-def fix_failing_assertions(code: str, func_name: str, existing_tests: str, pytest_stdout: str) -> dict:
-    user_prompt = (
-        f"Function (verified correct):\n```python\n{code}\n```\n\n"
-        f"Current tests:\n```python\n{existing_tests}\n```\n\n"
-        f"Pytest failure output:\n```\n{pytest_stdout}\n```"
-    )
-    llm_call = call_llm(
-        system_prompt=FIX_ASSERTIONS_SYSTEM_PROMPT,
-        user_prompt=user_prompt,
-        temperature=0.0,
-    )
-    tests = extract_code(llm_call["response_text"])
-    return {"tests": tests, "llm_call": llm_call}
-
-
 def regenerate_for_missing_lines(
     code: str,
     func_name: str,
