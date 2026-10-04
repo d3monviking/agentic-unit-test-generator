@@ -1,0 +1,11 @@
+{
+  "problem_id": "602",
+  "passed": false,
+  "returncode": 1,
+  "stdout": ".....F..                                                                 [100%]\n=================================== FAILURES ===================================\n_____________________ test_first_repeated_char_with_spaces _____________________\n\n    def test_first_repeated_char_with_spaces():\n>       assert first_repeated_char(\"a b c a\") == 'a'\nE       AssertionError: assert ' ' == 'a'\nE         \nE         Strings contain only whitespace, escaping them using repr()\nE         - 'a'\nE         + ' '\n\ntest_solution.py:19: AssertionError\n=========================== short test summary info ============================\nFAILED test_solution.py::test_first_repeated_char_with_spaces - AssertionErro...\n1 failed, 7 passed in 0.04s\n",
+  "stderr": "",
+  "coverage_percent": 100.0,
+  "branch_coverage_percent": 100.0,
+  "missing_lines": [],
+  "missing_branches": []
+}

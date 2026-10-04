@@ -1,0 +1,184 @@
+{
+  "problem_id": "264",
+  "description": "Write a function to calculate a dog's age in dog's years.",
+  "steps": [
+    {
+      "agent": "code_generator",
+      "llm_call": {
+        "request": {
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "temperature": 0.2,
+          "max_tokens": 3000,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a Python programmer. Given a problem description, write a single self-contained Python function that solves it. Output ONLY the function inside a ```python fenced code block, with no explanation, no example usage, and no extra top-level code."
+            },
+            {
+              "role": "user",
+              "content": "Write a function to calculate a dog's age in dog's years."
+            }
+          ],
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "response_text": "```python\ndef dog_years(human_years):\n    if human_years <= 0:\n        return 0\n    elif human_years == 1:\n        return 15\n    elif human_years == 2:\n        return 24\n    else:\n        return 24 + (human_years - 2) * 5\n```",
+        "raw_response": {
+          "id": "gen-1791113764-CsjrnplSDvigp65IZDgq",
+          "object": "chat.completion",
+          "created": 1791113764,
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "provider": "Nvidia",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "stop",
+              "message": {
+                "role": "assistant",
+                "content": "```python\ndef dog_years(human_years):\n    if human_years <= 0:\n        return 0\n    elif human_years == 1:\n        return 15\n    elif human_years == 2:\n        return 24\n    else:\n        return 24 + (human_years - 2) * 5\n```",
+                "refusal": null,
+                "reasoning": null
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 81,
+            "completion_tokens": 79,
+            "total_tokens": 160,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "agent": "test_generator",
+      "llm_call": {
+        "request": {
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "temperature": 0.4,
+          "max_tokens": 3000,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a software test engineer practicing coverage-based unit testing. Do not write any prose, explanation, or reasoning before the code - not even one sentence. Begin your response immediately with the ```python fence; work out expected values silently. Given a Python function, write pytest test cases that together cover every statement, every branch (if/else) and every loop path (zero iterations, one iteration, multiple iterations where applicable) in the function. Import the function with `from solution import dog_years`. Use at most 8 test functions total, and do not repeat near-identical cases - pick the minimum set of inputs needed for full coverage. \n\nCRITICAL - derive each expected value from the PROBLEM DESCRIPTION, never by mentally tracing what the given function's code happens to compute. The function may be buggy; a test that merely reproduces the function's own behavior can never catch that bug, and defeats the purpose of testing. Work out the correct answer as if you were solving the original problem from scratch, then check whether the function matches it - don't reason in the other direction. \n\nExpected values are a common source of error: you are prone to mistakes when hand-computing the result of multi-step logic (e.g. dynamic programming, running totals, index arithmetic) for arbitrary inputs. To avoid this, prefer the SIMPLEST input that still exercises each branch/loop path - e.g. a 1x1 or 2x2 matrix instead of a 4x4 one, all-equal or all-zero elements instead of arbitrary distinct numbers, a single iteration instead of five - so the correct expected value is obvious by inspection rather than something you have to simulate mentally. Only use a larger/more complex input on one test if a simple input genuinely cannot reach some branch or loop path. \n\nOutput ONLY the test file contents inside a single ```python fenced code block, with no explanation."
+            },
+            {
+              "role": "user",
+              "content": "Problem description:\nWrite a function to calculate a dog's age in dog's years.\n\nFunction under test:\n```python\ndef dog_years(human_years):\n    if human_years <= 0:\n        return 0\n    elif human_years == 1:\n        return 15\n    elif human_years == 2:\n        return 24\n    else:\n        return 24 + (human_years - 2) * 5\n```"
+            }
+          ],
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "response_text": "```python\nimport pytest\nfrom solution import dog_years\n\ndef test_dog_years_zero_or_negative():\n    assert dog_years(0) == 0\n    assert dog_years(-5) == 0\n\ndef test_dog_years_one():\n    assert dog_years(1) == 15\n\ndef test_dog_years_two():\n    assert dog_years(2) == 24\n\ndef test_dog_years_three():\n    assert dog_years(3) == 29\n\ndef test_dog_years_four():\n    assert dog_years(4) == 34\n```",
+        "raw_response": {
+          "id": "gen-1791113764-JU8vYG5VwvHGc9YuCQmr",
+          "object": "chat.completion",
+          "created": 1791113764,
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "provider": "Nvidia",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "stop",
+              "message": {
+                "role": "assistant",
+                "content": "```python\nimport pytest\nfrom solution import dog_years\n\ndef test_dog_years_zero_or_negative():\n    assert dog_years(0) == 0\n    assert dog_years(-5) == 0\n\ndef test_dog_years_one():\n    assert dog_years(1) == 15\n\ndef test_dog_years_two():\n    assert dog_years(2) == 24\n\ndef test_dog_years_three():\n    assert dog_years(3) == 29\n\ndef test_dog_years_four():\n    assert dog_years(4) == 34\n```",
+                "refusal": null,
+                "reasoning": null
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 511,
+            "completion_tokens": 136,
+            "total_tokens": 647,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "agent": "test_executor",
+      "verdict": {
+        "problem_id": "264",
+        "passed": true,
+        "returncode": 0,
+        "stdout": ".....                                                                    [100%]\n5 passed in 0.02s\n",
+        "stderr": "",
+        "coverage_percent": 100.0,
+        "branch_coverage_percent": 100.0,
+        "missing_lines": [],
+        "missing_branches": []
+      }
+    },
+    {
+      "agent": "oracle_check",
+      "result": {
+        "ran": true,
+        "oracle_passed": false,
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"/home/priyanshu-tiwari/Desktop/Sem 7/Software Testing/Mini Project/results/264/oracle_check.py\", line 2, in <module>\n    assert dog_age(12)==61\n           ^^^^^^^^^^^^^^^\nAssertionError\n"
+      }
+    }
+  ],
+  "final_code": "def dog_years(human_years):\n    if human_years <= 0:\n        return 0\n    elif human_years == 1:\n        return 15\n    elif human_years == 2:\n        return 24\n    else:\n        return 24 + (human_years - 2) * 5",
+  "final_tests": "import pytest\nfrom solution import dog_years\n\ndef test_dog_years_zero_or_negative():\n    assert dog_years(0) == 0\n    assert dog_years(-5) == 0\n\ndef test_dog_years_one():\n    assert dog_years(1) == 15\n\ndef test_dog_years_two():\n    assert dog_years(2) == 24\n\ndef test_dog_years_three():\n    assert dog_years(3) == 29\n\ndef test_dog_years_four():\n    assert dog_years(4) == 34",
+  "final_verdict": {
+    "problem_id": "264",
+    "passed": true,
+    "returncode": 0,
+    "stdout": ".....                                                                    [100%]\n5 passed in 0.02s\n",
+    "stderr": "",
+    "coverage_percent": 100.0,
+    "branch_coverage_percent": 100.0,
+    "missing_lines": [],
+    "missing_branches": []
+  },
+  "oracle_classification": "false_negative",
+  "coverage_repair_attempts": 0
+}

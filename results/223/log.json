@@ -1,0 +1,471 @@
+{
+  "problem_id": "223",
+  "description": "Write a function to check for majority element in the given sorted array.",
+  "steps": [
+    {
+      "agent": "code_generator",
+      "llm_call": {
+        "request": {
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "temperature": 0.2,
+          "max_tokens": 3000,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a Python programmer. Given a problem description, write a single self-contained Python function that solves it. Output ONLY the function inside a ```python fenced code block, with no explanation, no example usage, and no extra top-level code."
+            },
+            {
+              "role": "user",
+              "content": "Write a function to check for majority element in the given sorted array."
+            }
+          ],
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "response_text": "```python\ndef has_majority_element(arr):\n    n = len(arr)\n    if n == 0:\n        return False\n    candidate = arr[n // 2]\n    left = 0\n    right = n - 1\n    first_occurrence = n\n    last_occurrence = -1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == candidate:\n            first_occurrence = mid\n            right = mid - 1\n        elif arr[mid] < candidate:\n            left = mid + 1\n        else:\n            right = mid - 1\n    left = 0\n    right = n - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == candidate:\n            last_occurrence = mid\n            left = mid + 1\n        elif arr[mid] < candidate:\n            left = mid + 1\n        else:\n            right = mid - 1\n    count = last_occurrence - first_occurrence + 1\n    return count > n // 2\n```",
+        "raw_response": {
+          "id": "gen-1791113746-wsfXeWvPa79PpyF5MfOC",
+          "object": "chat.completion",
+          "created": 1791113746,
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "provider": "Nvidia",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "stop",
+              "message": {
+                "role": "assistant",
+                "content": "```python\ndef has_majority_element(arr):\n    n = len(arr)\n    if n == 0:\n        return False\n    candidate = arr[n // 2]\n    left = 0\n    right = n - 1\n    first_occurrence = n\n    last_occurrence = -1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == candidate:\n            first_occurrence = mid\n            right = mid - 1\n        elif arr[mid] < candidate:\n            left = mid + 1\n        else:\n            right = mid - 1\n    left = 0\n    right = n - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == candidate:\n            last_occurrence = mid\n            left = mid + 1\n        elif arr[mid] < candidate:\n            left = mid + 1\n        else:\n            right = mid - 1\n    count = last_occurrence - first_occurrence + 1\n    return count > n // 2\n```",
+                "refusal": null,
+                "reasoning": null
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 81,
+            "completion_tokens": 247,
+            "total_tokens": 328,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "agent": "test_generator",
+      "llm_call": {
+        "request": {
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "temperature": 0.4,
+          "max_tokens": 3000,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a software test engineer practicing coverage-based unit testing. Do not write any prose, explanation, or reasoning before the code - not even one sentence. Begin your response immediately with the ```python fence; work out expected values silently. Given a Python function, write pytest test cases that together cover every statement, every branch (if/else) and every loop path (zero iterations, one iteration, multiple iterations where applicable) in the function. Import the function with `from solution import has_majority_element`. Use at most 8 test functions total, and do not repeat near-identical cases - pick the minimum set of inputs needed for full coverage. \n\nCRITICAL - derive each expected value from the PROBLEM DESCRIPTION, never by mentally tracing what the given function's code happens to compute. The function may be buggy; a test that merely reproduces the function's own behavior can never catch that bug, and defeats the purpose of testing. Work out the correct answer as if you were solving the original problem from scratch, then check whether the function matches it - don't reason in the other direction. \n\nExpected values are a common source of error: you are prone to mistakes when hand-computing the result of multi-step logic (e.g. dynamic programming, running totals, index arithmetic) for arbitrary inputs. To avoid this, prefer the SIMPLEST input that still exercises each branch/loop path - e.g. a 1x1 or 2x2 matrix instead of a 4x4 one, all-equal or all-zero elements instead of arbitrary distinct numbers, a single iteration instead of five - so the correct expected value is obvious by inspection rather than something you have to simulate mentally. Only use a larger/more complex input on one test if a simple input genuinely cannot reach some branch or loop path. \n\nOutput ONLY the test file contents inside a single ```python fenced code block, with no explanation."
+            },
+            {
+              "role": "user",
+              "content": "Problem description:\nWrite a function to check for majority element in the given sorted array.\n\nFunction under test:\n```python\ndef has_majority_element(arr):\n    n = len(arr)\n    if n == 0:\n        return False\n    candidate = arr[n // 2]\n    left = 0\n    right = n - 1\n    first_occurrence = n\n    last_occurrence = -1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == candidate:\n            first_occurrence = mid\n            right = mid - 1\n        elif arr[mid] < candidate:\n            left = mid + 1\n        else:\n            right = mid - 1\n    left = 0\n    right = n - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == candidate:\n            last_occurrence = mid\n            left = mid + 1\n        elif arr[mid] < candidate:\n            left = mid + 1\n        else:\n            right = mid - 1\n    count = last_occurrence - first_occurrence + 1\n    return count > n // 2\n```"
+            }
+          ],
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "response_text": "```python\nimport pytest\nfrom solution import has_majority_element\n\ndef test_empty_array():\n    assert has_majority_element([]) == False\n\ndef test_single_element():\n    assert has_majority_element([5]) == True\n\ndef test_two_elements_no_majority():\n    assert has_majority_element([1, 2]) == False\n\ndef test_two_elements_with_majority():\n    assert has_majority_element([2, 2]) == True\n\ndef test_three_elements_no_majority():\n    assert has_majority_element([1, 2, 3]) == False\n\ndef test_three_elements_with_majority():\n    assert has_majority_element([2, 2, 3]) == True\n\ndef test_four_elements_no_majority():\n    assert has_majority_element([1, 2, 3, 4]) == False\n\ndef test_four_elements_with_majority():\n    assert has_majority_element([2, 2, 2, 3]) == True\n```",
+        "raw_response": {
+          "id": "gen-1791113749-HDEDF7V0y37GlNhyVdGS",
+          "object": "chat.completion",
+          "created": 1791113749,
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "provider": "Nvidia",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "stop",
+              "message": {
+                "role": "assistant",
+                "content": "```python\nimport pytest\nfrom solution import has_majority_element\n\ndef test_empty_array():\n    assert has_majority_element([]) == False\n\ndef test_single_element():\n    assert has_majority_element([5]) == True\n\ndef test_two_elements_no_majority():\n    assert has_majority_element([1, 2]) == False\n\ndef test_two_elements_with_majority():\n    assert has_majority_element([2, 2]) == True\n\ndef test_three_elements_no_majority():\n    assert has_majority_element([1, 2, 3]) == False\n\ndef test_three_elements_with_majority():\n    assert has_majority_element([2, 2, 3]) == True\n\ndef test_four_elements_no_majority():\n    assert has_majority_element([1, 2, 3, 4]) == False\n\ndef test_four_elements_with_majority():\n    assert has_majority_element([2, 2, 2, 3]) == True\n```",
+                "refusal": null,
+                "reasoning": null
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 681,
+            "completion_tokens": 224,
+            "total_tokens": 905,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "agent": "test_executor",
+      "verdict": {
+        "problem_id": "223",
+        "passed": true,
+        "returncode": 0,
+        "stdout": "........                                                                 [100%]\n8 passed in 0.02s\n",
+        "stderr": "",
+        "coverage_percent": 96.55172413793103,
+        "branch_coverage_percent": 92.85714285714286,
+        "missing_lines": [
+          18
+        ],
+        "missing_branches": [
+          [
+            15,
+            18
+          ]
+        ]
+      }
+    },
+    {
+      "agent": "test_generator_retry",
+      "llm_call": {
+        "request": {
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "temperature": 0.4,
+          "max_tokens": 3000,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You previously wrote pytest tests for a function, but coverage analysis shows some lines are still not executed by any test. Add or modify test cases so that the missing lines are covered too. Keep the existing tests and import style. Prefer the simplest input that reaches the missing line/branch - e.g. a small matrix with equal/zero values rather than an arbitrary one - so you can determine the correct expected value by inspection instead of simulating multi-step logic by hand. Output ONLY the full, updated test file inside a ```python fenced code block, with no explanation."
+            },
+            {
+              "role": "user",
+              "content": "Function under test:\n```python\ndef has_majority_element(arr):\n    n = len(arr)\n    if n == 0:\n        return False\n    candidate = arr[n // 2]\n    left = 0\n    right = n - 1\n    first_occurrence = n\n    last_occurrence = -1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == candidate:\n            first_occurrence = mid\n            right = mid - 1\n        elif arr[mid] < candidate:\n            left = mid + 1\n        else:\n            right = mid - 1\n    left = 0\n    right = n - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == candidate:\n            last_occurrence = mid\n            left = mid + 1\n        elif arr[mid] < candidate:\n            left = mid + 1\n        else:\n            right = mid - 1\n    count = last_occurrence - first_occurrence + 1\n    return count > n // 2\n```\n\nCurrent tests:\n```python\nimport pytest\nfrom solution import has_majority_element\n\ndef test_empty_array():\n    assert has_majority_element([]) == False\n\ndef test_single_element():\n    assert has_majority_element([5]) == True\n\ndef test_two_elements_no_majority():\n    assert has_majority_element([1, 2]) == False\n\ndef test_two_elements_with_majority():\n    assert has_majority_element([2, 2]) == True\n\ndef test_three_elements_no_majority():\n    assert has_majority_element([1, 2, 3]) == False\n\ndef test_three_elements_with_majority():\n    assert has_majority_element([2, 2, 3]) == True\n\ndef test_four_elements_no_majority():\n    assert has_majority_element([1, 2, 3, 4]) == False\n\ndef test_four_elements_with_majority():\n    assert has_majority_element([2, 2, 2, 3]) == True\n```\n\nCoverage report shows the following gaps - uncovered line numbers: [18]; uncovered branches (as [from_line, to_line] jumps not taken): [[15, 18]]. Add tests to cover them, in particular inputs that force each branch (e.g. the opposite condition, or zero/one/multiple loop iterations) to be taken."
+            }
+          ],
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "response_text": "```python\nimport pytest\nfrom solution import has_majority_element\n\ndef test_empty_array():\n    assert has_majority_element([]) == False\n\ndef test_single_element():\n    assert has_majority_element([5]) == True\n\ndef test_two_elements_no_majority():\n    assert has_majority_element([1, 2]) == False\n\ndef test_two_elements_with_majority():\n    assert has_majority_element([2, 2]) == True\n\ndef test_three_elements_no_majority():\n    assert has_majority_element([1, 2, 3]) == False\n\ndef test_three_elements_with_majority():\n    assert has_majority_element([2, 2, 3]) == True\n\ndef test_four_elements_no_majority():\n    assert has_majority_element([1, 2, 3, 4]) == False\n\ndef test_four_elements_with_majority():\n    assert has_majority_element([2, 2, 2, 3]) == True\n\ndef test_candidate_not_found_first():\n    assert has_majority_element([1, 3, 5, 7]) == False\n\ndef test_candidate_not_found_last():\n    assert has_majority_element([1, 3, 5, 7]) == False\n```",
+        "raw_response": {
+          "id": "gen-1791113751-QZ85iYlECIkcENslrtRB",
+          "object": "chat.completion",
+          "created": 1791113751,
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "provider": "Nvidia",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "stop",
+              "message": {
+                "role": "assistant",
+                "content": "```python\nimport pytest\nfrom solution import has_majority_element\n\ndef test_empty_array():\n    assert has_majority_element([]) == False\n\ndef test_single_element():\n    assert has_majority_element([5]) == True\n\ndef test_two_elements_no_majority():\n    assert has_majority_element([1, 2]) == False\n\ndef test_two_elements_with_majority():\n    assert has_majority_element([2, 2]) == True\n\ndef test_three_elements_no_majority():\n    assert has_majority_element([1, 2, 3]) == False\n\ndef test_three_elements_with_majority():\n    assert has_majority_element([2, 2, 3]) == True\n\ndef test_four_elements_no_majority():\n    assert has_majority_element([1, 2, 3, 4]) == False\n\ndef test_four_elements_with_majority():\n    assert has_majority_element([2, 2, 2, 3]) == True\n\ndef test_candidate_not_found_first():\n    assert has_majority_element([1, 3, 5, 7]) == False\n\ndef test_candidate_not_found_last():\n    assert has_majority_element([1, 3, 5, 7]) == False\n```",
+                "refusal": null,
+                "reasoning": null
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 679,
+            "completion_tokens": 284,
+            "total_tokens": 963,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "agent": "test_executor_retry",
+      "verdict": {
+        "problem_id": "223",
+        "passed": true,
+        "returncode": 0,
+        "stdout": "..........                                                               [100%]\n10 passed in 0.02s\n",
+        "stderr": "",
+        "coverage_percent": 96.55172413793103,
+        "branch_coverage_percent": 92.85714285714286,
+        "missing_lines": [
+          18
+        ],
+        "missing_branches": [
+          [
+            15,
+            18
+          ]
+        ]
+      }
+    },
+    {
+      "agent": "test_generator_retry",
+      "llm_call": {
+        "request": {
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "temperature": 0.4,
+          "max_tokens": 3000,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You previously wrote pytest tests for a function, but coverage analysis shows some lines are still not executed by any test. Add or modify test cases so that the missing lines are covered too. Keep the existing tests and import style. Prefer the simplest input that reaches the missing line/branch - e.g. a small matrix with equal/zero values rather than an arbitrary one - so you can determine the correct expected value by inspection instead of simulating multi-step logic by hand. Output ONLY the full, updated test file inside a ```python fenced code block, with no explanation."
+            },
+            {
+              "role": "user",
+              "content": "Function under test:\n```python\ndef has_majority_element(arr):\n    n = len(arr)\n    if n == 0:\n        return False\n    candidate = arr[n // 2]\n    left = 0\n    right = n - 1\n    first_occurrence = n\n    last_occurrence = -1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == candidate:\n            first_occurrence = mid\n            right = mid - 1\n        elif arr[mid] < candidate:\n            left = mid + 1\n        else:\n            right = mid - 1\n    left = 0\n    right = n - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == candidate:\n            last_occurrence = mid\n            left = mid + 1\n        elif arr[mid] < candidate:\n            left = mid + 1\n        else:\n            right = mid - 1\n    count = last_occurrence - first_occurrence + 1\n    return count > n // 2\n```\n\nCurrent tests:\n```python\nimport pytest\nfrom solution import has_majority_element\n\ndef test_empty_array():\n    assert has_majority_element([]) == False\n\ndef test_single_element():\n    assert has_majority_element([5]) == True\n\ndef test_two_elements_no_majority():\n    assert has_majority_element([1, 2]) == False\n\ndef test_two_elements_with_majority():\n    assert has_majority_element([2, 2]) == True\n\ndef test_three_elements_no_majority():\n    assert has_majority_element([1, 2, 3]) == False\n\ndef test_three_elements_with_majority():\n    assert has_majority_element([2, 2, 3]) == True\n\ndef test_four_elements_no_majority():\n    assert has_majority_element([1, 2, 3, 4]) == False\n\ndef test_four_elements_with_majority():\n    assert has_majority_element([2, 2, 2, 3]) == True\n\ndef test_candidate_not_found_first():\n    assert has_majority_element([1, 3, 5, 7]) == False\n\ndef test_candidate_not_found_last():\n    assert has_majority_element([1, 3, 5, 7]) == False\n```\n\nCoverage report shows the following gaps - uncovered line numbers: [18]; uncovered branches (as [from_line, to_line] jumps not taken): [[15, 18]]. Add tests to cover them, in particular inputs that force each branch (e.g. the opposite condition, or zero/one/multiple loop iterations) to be taken."
+            }
+          ],
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "response_text": "```python\nimport pytest\nfrom solution import has_majority_element\n\ndef test_empty_array():\n    assert has_majority_element([]) == False\n\ndef test_single_element():\n    assert has_majority_element([5]) == True\n\ndef test_two_elements_no_majority():\n    assert has_majority_element([1, 2]) == False\n\ndef test_two_elements_with_majority():\n    assert has_majority_element([2, 2]) == True\n\ndef test_three_elements_no_majority():\n    assert has_majority_element([1, 2, 3]) == False\n\ndef test_three_elements_with_majority():\n    assert has_majority_element([2, 2, 3]) == True\n\ndef test_four_elements_no_majority():\n    assert has_majority_element([1, 2, 3, 4]) == False\n\ndef test_four_elements_with_majority():\n    assert has_majority_element([2, 2, 2, 3]) == True\n\ndef test_candidate_not_found_first():\n    assert has_majority_element([1, 3, 5, 7]) == False\n\ndef test_candidate_not_found_last():\n    assert has_majority_element([1, 3, 5, 7]) == False\n\ndef test_candidate_found_at_end():\n    assert has_majority_element([1, 2, 3, 3, 3]) == True\n```",
+        "raw_response": {
+          "id": "gen-1791113753-nBavjilYMceCm772Bsdq",
+          "object": "chat.completion",
+          "created": 1791113753,
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "provider": "Nvidia",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "stop",
+              "message": {
+                "role": "assistant",
+                "content": "```python\nimport pytest\nfrom solution import has_majority_element\n\ndef test_empty_array():\n    assert has_majority_element([]) == False\n\ndef test_single_element():\n    assert has_majority_element([5]) == True\n\ndef test_two_elements_no_majority():\n    assert has_majority_element([1, 2]) == False\n\ndef test_two_elements_with_majority():\n    assert has_majority_element([2, 2]) == True\n\ndef test_three_elements_no_majority():\n    assert has_majority_element([1, 2, 3]) == False\n\ndef test_three_elements_with_majority():\n    assert has_majority_element([2, 2, 3]) == True\n\ndef test_four_elements_no_majority():\n    assert has_majority_element([1, 2, 3, 4]) == False\n\ndef test_four_elements_with_majority():\n    assert has_majority_element([2, 2, 2, 3]) == True\n\ndef test_candidate_not_found_first():\n    assert has_majority_element([1, 3, 5, 7]) == False\n\ndef test_candidate_not_found_last():\n    assert has_majority_element([1, 3, 5, 7]) == False\n\ndef test_candidate_found_at_end():\n    assert has_majority_element([1, 2, 3, 3, 3]) == True\n```",
+                "refusal": null,
+                "reasoning": null
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 739,
+            "completion_tokens": 317,
+            "total_tokens": 1056,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "agent": "test_executor_retry",
+      "verdict": {
+        "problem_id": "223",
+        "passed": true,
+        "returncode": 0,
+        "stdout": "...........                                                              [100%]\n11 passed in 0.03s\n",
+        "stderr": "",
+        "coverage_percent": 96.55172413793103,
+        "branch_coverage_percent": 92.85714285714286,
+        "missing_lines": [
+          18
+        ],
+        "missing_branches": [
+          [
+            15,
+            18
+          ]
+        ]
+      }
+    },
+    {
+      "agent": "test_generator_retry",
+      "llm_call": {
+        "request": {
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "temperature": 0.4,
+          "max_tokens": 3000,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You previously wrote pytest tests for a function, but coverage analysis shows some lines are still not executed by any test. Add or modify test cases so that the missing lines are covered too. Keep the existing tests and import style. Prefer the simplest input that reaches the missing line/branch - e.g. a small matrix with equal/zero values rather than an arbitrary one - so you can determine the correct expected value by inspection instead of simulating multi-step logic by hand. Output ONLY the full, updated test file inside a ```python fenced code block, with no explanation."
+            },
+            {
+              "role": "user",
+              "content": "Function under test:\n```python\ndef has_majority_element(arr):\n    n = len(arr)\n    if n == 0:\n        return False\n    candidate = arr[n // 2]\n    left = 0\n    right = n - 1\n    first_occurrence = n\n    last_occurrence = -1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == candidate:\n            first_occurrence = mid\n            right = mid - 1\n        elif arr[mid] < candidate:\n            left = mid + 1\n        else:\n            right = mid - 1\n    left = 0\n    right = n - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == candidate:\n            last_occurrence = mid\n            left = mid + 1\n        elif arr[mid] < candidate:\n            left = mid + 1\n        else:\n            right = mid - 1\n    count = last_occurrence - first_occurrence + 1\n    return count > n // 2\n```\n\nCurrent tests:\n```python\nimport pytest\nfrom solution import has_majority_element\n\ndef test_empty_array():\n    assert has_majority_element([]) == False\n\ndef test_single_element():\n    assert has_majority_element([5]) == True\n\ndef test_two_elements_no_majority():\n    assert has_majority_element([1, 2]) == False\n\ndef test_two_elements_with_majority():\n    assert has_majority_element([2, 2]) == True\n\ndef test_three_elements_no_majority():\n    assert has_majority_element([1, 2, 3]) == False\n\ndef test_three_elements_with_majority():\n    assert has_majority_element([2, 2, 3]) == True\n\ndef test_four_elements_no_majority():\n    assert has_majority_element([1, 2, 3, 4]) == False\n\ndef test_four_elements_with_majority():\n    assert has_majority_element([2, 2, 2, 3]) == True\n\ndef test_candidate_not_found_first():\n    assert has_majority_element([1, 3, 5, 7]) == False\n\ndef test_candidate_not_found_last():\n    assert has_majority_element([1, 3, 5, 7]) == False\n\ndef test_candidate_found_at_end():\n    assert has_majority_element([1, 2, 3, 3, 3]) == True\n```\n\nCoverage report shows the following gaps - uncovered line numbers: [18]; uncovered branches (as [from_line, to_line] jumps not taken): [[15, 18]]. Add tests to cover them, in particular inputs that force each branch (e.g. the opposite condition, or zero/one/multiple loop iterations) to be taken."
+            }
+          ],
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "response_text": "```python\nimport pytest\nfrom solution import has_majority_element\n\ndef test_empty_array():\n    assert has_majority_element([]) == False\n\ndef test_single_element():\n    assert has_majority_element([5]) == True\n\ndef test_two_elements_no_majority():\n    assert has_majority_element([1, 2]) == False\n\ndef test_two_elements_with_majority():\n    assert has_majority_element([2, 2]) == True\n\ndef test_three_elements_no_majority():\n    assert has_majority_element([1, 2, 3]) == False\n\ndef test_three_elements_with_majority():\n    assert has_majority_element([2, 2, 3]) == True\n\ndef test_four_elements_no_majority():\n    assert has_majority_element([1, 2, 3, 4]) == False\n\ndef test_four_elements_with_majority():\n    assert has_majority_element([2, 2, 2, 3]) == True\n\ndef test_candidate_not_found_first():\n    assert has_majority_element([1, 3, 5, 7]) == False\n\ndef test_candidate_not_found_last():\n    assert has_majority_element([1, 3, 5, 7]) == False\n\ndef test_candidate_found_at_end():\n    assert has_majority_element([1, 2, 3, 3, 3]) == True\n\ndef test_candidate_found_at_beginning():\n    assert has_majority_element([1, 1, 1, 2, 3]) == True\n\ndef test_candidate_not_found_middle():\n    assert has_majority_element([1, 2, 4, 5, 6]) == False\n```",
+        "raw_response": {
+          "id": "gen-1791113757-zjbRQrKLjrvC0Hiwo6kp",
+          "object": "chat.completion",
+          "created": 1791113757,
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "provider": "Nvidia",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "stop",
+              "message": {
+                "role": "assistant",
+                "content": "```python\nimport pytest\nfrom solution import has_majority_element\n\ndef test_empty_array():\n    assert has_majority_element([]) == False\n\ndef test_single_element():\n    assert has_majority_element([5]) == True\n\ndef test_two_elements_no_majority():\n    assert has_majority_element([1, 2]) == False\n\ndef test_two_elements_with_majority():\n    assert has_majority_element([2, 2]) == True\n\ndef test_three_elements_no_majority():\n    assert has_majority_element([1, 2, 3]) == False\n\ndef test_three_elements_with_majority():\n    assert has_majority_element([2, 2, 3]) == True\n\ndef test_four_elements_no_majority():\n    assert has_majority_element([1, 2, 3, 4]) == False\n\ndef test_four_elements_with_majority():\n    assert has_majority_element([2, 2, 2, 3]) == True\n\ndef test_candidate_not_found_first():\n    assert has_majority_element([1, 3, 5, 7]) == False\n\ndef test_candidate_not_found_last():\n    assert has_majority_element([1, 3, 5, 7]) == False\n\ndef test_candidate_found_at_end():\n    assert has_majority_element([1, 2, 3, 3, 3]) == True\n\ndef test_candidate_found_at_beginning():\n    assert has_majority_element([1, 1, 1, 2, 3]) == True\n\ndef test_candidate_not_found_middle():\n    assert has_majority_element([1, 2, 4, 5, 6]) == False\n```",
+                "refusal": null,
+                "reasoning": null
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 772,
+            "completion_tokens": 385,
+            "total_tokens": 1157,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "agent": "test_executor_retry",
+      "verdict": {
+        "problem_id": "223",
+        "passed": true,
+        "returncode": 0,
+        "stdout": ".............                                                            [100%]\n13 passed in 0.03s\n",
+        "stderr": "",
+        "coverage_percent": 96.55172413793103,
+        "branch_coverage_percent": 92.85714285714286,
+        "missing_lines": [
+          18
+        ],
+        "missing_branches": [
+          [
+            15,
+            18
+          ]
+        ]
+      }
+    },
+    {
+      "agent": "oracle_check",
+      "result": {
+        "ran": true,
+        "oracle_passed": false,
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"/home/priyanshu-tiwari/Desktop/Sem 7/Software Testing/Mini Project/results/223/oracle_check.py\", line 2, in <module>\n    assert is_majority([1, 2, 3, 3, 3, 3, 10], 7, 3) == True\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: has_majority_element() takes 1 positional argument but 3 were given\n"
+      }
+    }
+  ],
+  "final_code": "def has_majority_element(arr):\n    n = len(arr)\n    if n == 0:\n        return False\n    candidate = arr[n // 2]\n    left = 0\n    right = n - 1\n    first_occurrence = n\n    last_occurrence = -1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == candidate:\n            first_occurrence = mid\n            right = mid - 1\n        elif arr[mid] < candidate:\n            left = mid + 1\n        else:\n            right = mid - 1\n    left = 0\n    right = n - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == candidate:\n            last_occurrence = mid\n            left = mid + 1\n        elif arr[mid] < candidate:\n            left = mid + 1\n        else:\n            right = mid - 1\n    count = last_occurrence - first_occurrence + 1\n    return count > n // 2",
+  "final_tests": "import pytest\nfrom solution import has_majority_element\n\ndef test_empty_array():\n    assert has_majority_element([]) == False\n\ndef test_single_element():\n    assert has_majority_element([5]) == True\n\ndef test_two_elements_no_majority():\n    assert has_majority_element([1, 2]) == False\n\ndef test_two_elements_with_majority():\n    assert has_majority_element([2, 2]) == True\n\ndef test_three_elements_no_majority():\n    assert has_majority_element([1, 2, 3]) == False\n\ndef test_three_elements_with_majority():\n    assert has_majority_element([2, 2, 3]) == True\n\ndef test_four_elements_no_majority():\n    assert has_majority_element([1, 2, 3, 4]) == False\n\ndef test_four_elements_with_majority():\n    assert has_majority_element([2, 2, 2, 3]) == True\n\ndef test_candidate_not_found_first():\n    assert has_majority_element([1, 3, 5, 7]) == False\n\ndef test_candidate_not_found_last():\n    assert has_majority_element([1, 3, 5, 7]) == False\n\ndef test_candidate_found_at_end():\n    assert has_majority_element([1, 2, 3, 3, 3]) == True\n\ndef test_candidate_found_at_beginning():\n    assert has_majority_element([1, 1, 1, 2, 3]) == True\n\ndef test_candidate_not_found_middle():\n    assert has_majority_element([1, 2, 4, 5, 6]) == False",
+  "final_verdict": {
+    "problem_id": "223",
+    "passed": true,
+    "returncode": 0,
+    "stdout": ".............                                                            [100%]\n13 passed in 0.03s\n",
+    "stderr": "",
+    "coverage_percent": 96.55172413793103,
+    "branch_coverage_percent": 92.85714285714286,
+    "missing_lines": [
+      18
+    ],
+    "missing_branches": [
+      [
+        15,
+        18
+      ]
+    ]
+  },
+  "oracle_classification": "false_negative",
+  "coverage_repair_attempts": 3
+}

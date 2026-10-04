@@ -1,0 +1,18 @@
+{
+  "problem_id": "223",
+  "passed": true,
+  "returncode": 0,
+  "stdout": ".............                                                            [100%]\n13 passed in 0.03s\n",
+  "stderr": "",
+  "coverage_percent": 96.55172413793103,
+  "branch_coverage_percent": 92.85714285714286,
+  "missing_lines": [
+    18
+  ],
+  "missing_branches": [
+    [
+      15,
+      18
+    ]
+  ]
+}

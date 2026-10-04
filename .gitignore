@@ -1,5 +1,6 @@
 /docs/
 .env
+api_keys.md
 .venv/
 __pycache__/
 *.pyc

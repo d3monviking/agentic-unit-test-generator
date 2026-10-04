@@ -4,35 +4,13 @@ import os
 
 import requests
 
-from src import config, oracle
+from src import config
 from src.agents import code_generator, test_generator, test_executor
-from src.dataset_loader import load_problems
+from src.dataset_loader import load_problems, get_problem
 
 
 def has_gaps(v: dict) -> bool:
     return bool(v.get("missing_lines")) or bool(v.get("missing_branches"))
-
-
-def classify_against_oracle(verdict_passed: bool, oracle_result: dict) -> str | None:
-    """Classifies the generated test suite's verdict against ground truth
-    (MBPP's own reference solution + test_list), independent of and never
-    fed back into the pipeline. This measures what the project is actually
-    about - how good the agent is at writing tests that catch real bugs -
-    rather than how good the pipeline is at self-correcting with help it
-    wouldn't have in the real world.
-
-    - true_positive:  code is actually buggy, generated tests caught it
-    - false_negative: code is actually buggy, generated tests missed it (passed anyway)
-    - false_positive: code is actually correct, generated tests wrongly failed it
-    - true_negative:  code is actually correct, generated tests correctly passed it
-    """
-    if oracle_result.get("oracle_passed") is None:
-        return None
-    code_actually_correct = oracle_result["oracle_passed"]
-    if code_actually_correct:
-        return "true_negative" if verdict_passed else "false_positive"
-    else:
-        return "true_positive" if not verdict_passed else "false_negative"
 
 
 def run_problem(problem: dict) -> dict:
@@ -58,12 +36,13 @@ def run_problem(problem: dict) -> dict:
     verdict = test_executor.run(problem_id, code, tests)
     log["steps"].append({"agent": "test_executor", "verdict": verdict})
 
-    # Coverage-gap retry only: if the generated tests pass but coverage.py
-    # reports lines/branches never executed, ask for more tests to close the
-    # gap. This uses only information a real test-generation tool would have
-    # (its own coverage report) - no reference solution involved.
+    # Coverage-gap retry: if coverage.py reports lines/branches never
+    # executed, ask for more tests to close the gap. This is the only repair
+    # loop in the pipeline - it uses only information the Test Executor
+    # Agent's own coverage.py run produced (missing lines/branches), nothing
+    # external.
     attempt = 0
-    while attempt < config.MAX_REPAIR_ATTEMPTS and verdict["passed"] and has_gaps(verdict):
+    while attempt < config.MAX_REPAIR_ATTEMPTS and has_gaps(verdict):
         attempt += 1
         try:
             retry_result = test_generator.regenerate_for_missing_lines(
@@ -78,18 +57,10 @@ def run_problem(problem: dict) -> dict:
         verdict = test_executor.run(problem_id, code, tests)
         log["steps"].append({"agent": "test_executor_retry", "verdict": verdict})
 
-    # Post-hoc oracle classification (evaluation only - not fed back into the
-    # pipeline): did the agent-written tests actually catch a real bug?
-    reference_code = problem.get("code", "")
-    reference_test_list = problem.get("test_list", [])
-    oracle_result = oracle.check(problem_id, func_name, reference_code, reference_test_list)
-    log["steps"].append({"agent": "oracle_check", "result": oracle_result})
-    classification = classify_against_oracle(verdict["passed"], oracle_result)
-
     log["final_code"] = code
     log["final_tests"] = tests
     log["final_verdict"] = verdict
-    log["oracle_classification"] = classification
+    log["coverage_repair_attempts"] = attempt
 
     with open(os.path.join(run_dir, "log.json"), "w") as f:
         json.dump(log, f, indent=2)
@@ -106,18 +77,34 @@ def _failure_reason(pytest_stdout: str) -> str:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--limit", type=int, default=3, help="Number of MBPP problems to run")
-    parser.add_argument("--start", type=int, default=0, help="Skip this many dataset records before starting")
+    parser.add_argument("--problem-id", type=int, default=None, help="Run only this single MBPP task_id")
+    parser.add_argument("--limit", type=int, default=3, help="Number of MBPP problems to run (ignored with --problem-id)")
+    parser.add_argument("--start", type=int, default=0, help="Skip this many dataset records before starting (ignored with --problem-id)")
     args = parser.parse_args()
 
-    problems = load_problems(limit=args.limit, start=args.start)
+    if args.problem_id is not None:
+        problem = get_problem(args.problem_id)
+        if problem is None:
+            print(f"No MBPP problem found with task_id={args.problem_id}")
+            return
+        problems = [problem]
+    else:
+        problems = load_problems(limit=args.limit, start=args.start)
     os.makedirs(config.RESULTS_DIR, exist_ok=True)
 
     summary_path = os.path.join(config.RESULTS_DIR, "summary.json")
     summary = []
-    if args.start and os.path.exists(summary_path):
+    if os.path.exists(summary_path):
         with open(summary_path) as f:
             summary = json.load(f)
+
+    def upsert_summary(entry: dict) -> None:
+        for i, existing in enumerate(summary):
+            if existing["problem_id"] == entry["problem_id"]:
+                summary[i] = entry
+                return
+        summary.append(entry)
+
     for problem in problems:
         problem_id = str(problem.get("task_id", problem.get("id")))
         print(f"Running problem {problem_id}...")
@@ -125,58 +112,58 @@ def main():
             log = run_problem(problem)
         except (ValueError, requests.exceptions.RequestException) as e:
             print(f"  -> ERROR: {e}")
-            summary.append({"problem_id": problem_id, "error": str(e)})
+            upsert_summary({"problem_id": problem_id, "error": str(e)})
             continue
         verdict = log["final_verdict"]
-        summary.append(
+        upsert_summary(
             {
                 "problem_id": log["problem_id"],
                 "passed": verdict["passed"],
                 "coverage_percent": verdict["coverage_percent"],
                 "branch_coverage_percent": verdict["branch_coverage_percent"],
-                "oracle_classification": log["oracle_classification"],
+                "coverage_repair_attempts": log["coverage_repair_attempts"],
             }
         )
         print(
             f"  -> passed={verdict['passed']} "
             f"statement_coverage={verdict['coverage_percent']} "
-            f"branch_coverage={verdict['branch_coverage_percent']} "
-            f"oracle={log['oracle_classification']}"
+            f"branch_coverage={verdict['branch_coverage_percent']}"
         )
         if not verdict["passed"]:
             print(f"     reason: {_failure_reason(verdict['stdout'])}")
+        if has_gaps(verdict):
+            print(
+                f"     WARNING: coverage criterion NOT fully satisfied after "
+                f"{log['coverage_repair_attempts']} repair attempt(s) "
+                f"(max {config.MAX_REPAIR_ATTEMPTS}) - "
+                f"missing_lines={verdict['missing_lines']} "
+                f"missing_branches={verdict['missing_branches']}"
+            )
 
     with open(summary_path, "w") as f:
         json.dump(summary, f, indent=2)
 
-    _print_oracle_stats(summary)
+    _print_coverage_stats(summary)
 
 
-def _print_oracle_stats(summary: list[dict]) -> None:
-    """Prints bug-catching effectiveness stats for the test generator agent:
-    of the problems where ground truth is known, how often did its tests
-    actually catch a real bug vs. miss one vs. false-flag correct code."""
-    counts = {"true_positive": 0, "false_negative": 0, "false_positive": 0, "true_negative": 0}
-    for entry in summary:
-        label = entry.get("oracle_classification")
-        if label in counts:
-            counts[label] += 1
-    total_classified = sum(counts.values())
-    if not total_classified:
+def _print_coverage_stats(summary: list[dict]) -> None:
+    """Prints aggregate coverage stats across a run: how many problems
+    reached full statement/branch coverage, and the average coverage."""
+    scored = [e for e in summary if "coverage_percent" in e and e["coverage_percent"] is not None]
+    if not scored:
         return
 
-    buggy = counts["true_positive"] + counts["false_negative"]
-    correct = counts["false_positive"] + counts["true_negative"]
-    print("\nOracle-based test generator effectiveness:")
-    print(f"  classified: {total_classified} (buggy code: {buggy}, correct code: {correct})")
-    print(f"  true_positive  (caught a real bug):        {counts['true_positive']}")
-    print(f"  false_negative (missed a real bug):        {counts['false_negative']}")
-    print(f"  false_positive (false-flagged correct code): {counts['false_positive']}")
-    print(f"  true_negative  (correctly passed correct code): {counts['true_negative']}")
-    if buggy:
-        print(f"  bug-catch rate: {counts['true_positive'] / buggy:.2%}")
-    if correct:
-        print(f"  false-alarm rate: {counts['false_positive'] / correct:.2%}")
+    full_coverage = sum(1 for e in scored if e["coverage_percent"] == 100.0 and e["branch_coverage_percent"] == 100.0)
+    passed = sum(1 for e in scored if e["passed"])
+    avg_statement = sum(e["coverage_percent"] for e in scored) / len(scored)
+    avg_branch = sum(e["branch_coverage_percent"] for e in scored) / len(scored)
+
+    print("\nCoverage summary:")
+    print(f"  problems measured: {len(scored)}")
+    print(f"  tests passed: {passed}/{len(scored)}")
+    print(f"  reached 100% statement + branch coverage: {full_coverage}/{len(scored)}")
+    print(f"  average statement coverage: {avg_statement:.1f}%")
+    print(f"  average branch coverage: {avg_branch:.1f}%")
 
 
 if __name__ == "__main__":

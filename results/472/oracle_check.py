@@ -1,0 +1,5 @@
+from solution import are_consecutive as check_Consecutive
+assert check_Consecutive([1,2,3,4,5]) == True
+assert check_Consecutive([1,2,3,5,6]) == False
+assert check_Consecutive([1,2,1]) == False
+print('ORACLE_OK')

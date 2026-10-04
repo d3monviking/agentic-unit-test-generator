@@ -1,0 +1,174 @@
+{
+  "problem_id": "567",
+  "description": "Write a function to check whether a specified list is sorted or not.",
+  "steps": [
+    {
+      "agent": "code_generator",
+      "llm_call": {
+        "request": {
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "temperature": 0.2,
+          "max_tokens": 3000,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a Python programmer. Given a problem description, write a single self-contained Python function that solves it. Output ONLY the function inside a ```python fenced code block, with no explanation, no example usage, and no extra top-level code."
+            },
+            {
+              "role": "user",
+              "content": "Write a function to check whether a specified list is sorted or not."
+            }
+          ],
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "response_text": "```python\ndef is_sorted(lst):\n    return all(lst[i] <= lst[i + 1] for i in range(len(lst) - 1))\n```",
+        "raw_response": {
+          "id": "gen-1791117379-GGRRvwwqSQr2ETDXjtUZ",
+          "object": "chat.completion",
+          "created": 1791117379,
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "provider": "Nvidia",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "stop",
+              "message": {
+                "role": "assistant",
+                "content": "```python\ndef is_sorted(lst):\n    return all(lst[i] <= lst[i + 1] for i in range(len(lst) - 1))\n```",
+                "refusal": null,
+                "reasoning": null
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 81,
+            "completion_tokens": 38,
+            "total_tokens": 119,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "agent": "test_generator",
+      "llm_call": {
+        "request": {
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "temperature": 0.4,
+          "max_tokens": 3000,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a software test engineer practicing coverage-based unit testing. Do not write any prose, explanation, or reasoning before the code - not even one sentence. Begin your response immediately with the ```python fence; work out expected values silently. Given a Python function, write pytest test cases that together cover every statement, every branch (if/else) and every loop path (zero iterations, one iteration, multiple iterations where applicable) in the function. Import the function with `from solution import is_sorted`. Use at most 8 test functions total, and do not repeat near-identical cases - pick the minimum set of inputs needed for full coverage. \n\nCRITICAL - derive each expected value from the PROBLEM DESCRIPTION, never by mentally tracing what the given function's code happens to compute. The function may be buggy; a test that merely reproduces the function's own behavior can never catch that bug, and defeats the purpose of testing. Work out the correct answer as if you were solving the original problem from scratch, then check whether the function matches it - don't reason in the other direction. \n\nExpected values are a common source of error: you are prone to mistakes when hand-computing the result of multi-step logic (e.g. dynamic programming, running totals, index arithmetic) for arbitrary inputs. To avoid this, prefer the SIMPLEST input that still exercises each branch/loop path - e.g. a 1x1 or 2x2 matrix instead of a 4x4 one, all-equal or all-zero elements instead of arbitrary distinct numbers, a single iteration instead of five - so the correct expected value is obvious by inspection rather than something you have to simulate mentally. Only use a larger/more complex input on one test if a simple input genuinely cannot reach some branch or loop path. \n\nOutput ONLY the test file contents inside a single ```python fenced code block, with no explanation."
+            },
+            {
+              "role": "user",
+              "content": "Problem description:\nWrite a function to check whether a specified list is sorted or not.\n\nFunction under test:\n```python\ndef is_sorted(lst):\n    return all(lst[i] <= lst[i + 1] for i in range(len(lst) - 1))\n```"
+            }
+          ],
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "response_text": "```python\nfrom solution import is_sorted\n\ndef test_empty_list():\n    assert is_sorted([]) == True\n\ndef test_single_element():\n    assert is_sorted([5]) == True\n\ndef test_two_elements_sorted():\n    assert is_sorted([1, 2]) == True\n\ndef test_two_elements_unsorted():\n    assert is_sorted([2, 1]) == False\n\ndef test_three_elements_sorted():\n    assert is_sorted([1, 2, 3]) == True\n\ndef test_three_elements_unsorted_at_end():\n    assert is_sorted([1, 3, 2]) == False\n\ndef test_three_elements_unsorted_at_start():\n    assert is_sorted([3, 1, 2]) == False\n\ndef test_all_equal_elements():\n    assert is_sorted([7, 7, 7]) == True\n```",
+        "raw_response": {
+          "id": "gen-1791117380-F5Ki59cNSjOqFmTzSkgA",
+          "object": "chat.completion",
+          "created": 1791117380,
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "provider": "Nvidia",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "stop",
+              "message": {
+                "role": "assistant",
+                "content": "```python\nfrom solution import is_sorted\n\ndef test_empty_list():\n    assert is_sorted([]) == True\n\ndef test_single_element():\n    assert is_sorted([5]) == True\n\ndef test_two_elements_sorted():\n    assert is_sorted([1, 2]) == True\n\ndef test_two_elements_unsorted():\n    assert is_sorted([2, 1]) == False\n\ndef test_three_elements_sorted():\n    assert is_sorted([1, 2, 3]) == True\n\ndef test_three_elements_unsorted_at_end():\n    assert is_sorted([1, 3, 2]) == False\n\ndef test_three_elements_unsorted_at_start():\n    assert is_sorted([3, 1, 2]) == False\n\ndef test_all_equal_elements():\n    assert is_sorted([7, 7, 7]) == True\n```",
+                "refusal": null,
+                "reasoning": null
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 470,
+            "completion_tokens": 190,
+            "total_tokens": 660,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "agent": "test_executor",
+      "verdict": {
+        "problem_id": "567",
+        "passed": true,
+        "returncode": 0,
+        "stdout": "........                                                                 [100%]\n8 passed in 0.03s\n",
+        "stderr": "",
+        "coverage_percent": 100.0,
+        "branch_coverage_percent": 100.0,
+        "missing_lines": [],
+        "missing_branches": []
+      }
+    }
+  ],
+  "final_code": "def is_sorted(lst):\n    return all(lst[i] <= lst[i + 1] for i in range(len(lst) - 1))",
+  "final_tests": "from solution import is_sorted\n\ndef test_empty_list():\n    assert is_sorted([]) == True\n\ndef test_single_element():\n    assert is_sorted([5]) == True\n\ndef test_two_elements_sorted():\n    assert is_sorted([1, 2]) == True\n\ndef test_two_elements_unsorted():\n    assert is_sorted([2, 1]) == False\n\ndef test_three_elements_sorted():\n    assert is_sorted([1, 2, 3]) == True\n\ndef test_three_elements_unsorted_at_end():\n    assert is_sorted([1, 3, 2]) == False\n\ndef test_three_elements_unsorted_at_start():\n    assert is_sorted([3, 1, 2]) == False\n\ndef test_all_equal_elements():\n    assert is_sorted([7, 7, 7]) == True",
+  "final_verdict": {
+    "problem_id": "567",
+    "passed": true,
+    "returncode": 0,
+    "stdout": "........                                                                 [100%]\n8 passed in 0.03s\n",
+    "stderr": "",
+    "coverage_percent": 100.0,
+    "branch_coverage_percent": 100.0,
+    "missing_lines": [],
+    "missing_branches": []
+  },
+  "coverage_repair_attempts": 0
+}

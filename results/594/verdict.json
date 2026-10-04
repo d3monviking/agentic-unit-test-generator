@@ -1,0 +1,11 @@
+{
+  "problem_id": "594",
+  "passed": false,
+  "returncode": 1,
+  "stdout": ".......F                                                                 [100%]\n=================================== FAILURES ===================================\n__________________________ test_both_found_in_middle ___________________________\n\n    def test_both_found_in_middle():\n>       assert diff_first_even_odd([1, 2, 3, 4]) == -1\nE       assert 1 == -1\nE        +  where 1 = diff_first_even_odd([1, 2, 3, 4])\n\ntest_solution.py:26: AssertionError\n=========================== short test summary info ============================\nFAILED test_solution.py::test_both_found_in_middle - assert 1 == -1\n1 failed, 7 passed in 0.05s\n",
+  "stderr": "",
+  "coverage_percent": 100.0,
+  "branch_coverage_percent": 100.0,
+  "missing_lines": [],
+  "missing_branches": []
+}

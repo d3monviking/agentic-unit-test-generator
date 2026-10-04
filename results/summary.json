@@ -1,46 +1,79 @@
 [
   {
-    "problem_id": "5",
-    "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    "problem_id": "69",
+    "passed": true,
+    "coverage_percent": 100.0,
+    "branch_coverage_percent": 100.0,
+    "oracle_classification": "true_negative"
   },
   {
-    "problem_id": "6",
-    "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    "problem_id": "223",
+    "passed": true,
+    "coverage_percent": 96.55172413793103,
+    "branch_coverage_percent": 92.85714285714286,
+    "oracle_classification": "false_negative"
   },
   {
-    "problem_id": "7",
-    "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    "problem_id": "264",
+    "passed": true,
+    "coverage_percent": 100.0,
+    "branch_coverage_percent": 100.0,
+    "oracle_classification": "false_negative"
   },
   {
-    "problem_id": "8",
-    "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    "problem_id": "433",
+    "passed": true,
+    "coverage_percent": 100.0,
+    "branch_coverage_percent": 100.0,
+    "oracle_classification": "false_negative"
   },
   {
-    "problem_id": "9",
-    "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    "problem_id": "472",
+    "passed": true,
+    "coverage_percent": 100.0,
+    "branch_coverage_percent": 100.0,
+    "oracle_classification": "true_negative"
   },
   {
-    "problem_id": "10",
-    "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    "problem_id": "559",
+    "passed": true,
+    "coverage_percent": 100.0,
+    "branch_coverage_percent": 100.0,
+    "oracle_classification": "false_negative"
   },
   {
-    "problem_id": "11",
-    "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    "problem_id": "567",
+    "passed": true,
+    "coverage_percent": 100.0,
+    "branch_coverage_percent": 100.0,
+    "coverage_repair_attempts": 0
   },
   {
-    "problem_id": "12",
-    "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    "problem_id": "594",
+    "passed": false,
+    "coverage_percent": 100.0,
+    "branch_coverage_percent": 100.0,
+    "coverage_repair_attempts": 0
   },
   {
-    "problem_id": "13",
-    "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    "problem_id": "598",
+    "passed": true,
+    "coverage_percent": 100.0,
+    "branch_coverage_percent": 100.0,
+    "coverage_repair_attempts": 0
   },
   {
-    "problem_id": "14",
-    "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    "problem_id": "602",
+    "passed": false,
+    "coverage_percent": 100.0,
+    "branch_coverage_percent": 100.0,
+    "coverage_repair_attempts": 0
   },
   {
-    "problem_id": "15",
-    "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    "problem_id": "2",
+    "passed": true,
+    "coverage_percent": 100.0,
+    "branch_coverage_percent": 100.0,
+    "coverage_repair_attempts": 0
   }
 ]

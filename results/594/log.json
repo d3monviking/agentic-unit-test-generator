@@ -1,0 +1,174 @@
+{
+  "problem_id": "594",
+  "description": "Write a function to find the difference of first even and odd number of a given list.",
+  "steps": [
+    {
+      "agent": "code_generator",
+      "llm_call": {
+        "request": {
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "temperature": 0.2,
+          "max_tokens": 3000,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a Python programmer. Given a problem description, write a single self-contained Python function that solves it. Output ONLY the function inside a ```python fenced code block, with no explanation, no example usage, and no extra top-level code."
+            },
+            {
+              "role": "user",
+              "content": "Write a function to find the difference of first even and odd number of a given list."
+            }
+          ],
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "response_text": "```python\ndef diff_first_even_odd(lst):\n    first_even = None\n    first_odd = None\n    for num in lst:\n        if first_even is None and num % 2 == 0:\n            first_even = num\n        if first_odd is None and num % 2 != 0:\n            first_odd = num\n        if first_even is not None and first_odd is not None:\n            break\n    if first_even is None or first_odd is None:\n        return None\n    return first_even - first_odd\n```",
+        "raw_response": {
+          "id": "gen-1791117387-clVR0pGzocSrURNBn0YF",
+          "object": "chat.completion",
+          "created": 1791117387,
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "provider": "Nvidia",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "stop",
+              "message": {
+                "role": "assistant",
+                "content": "```python\ndef diff_first_even_odd(lst):\n    first_even = None\n    first_odd = None\n    for num in lst:\n        if first_even is None and num % 2 == 0:\n            first_even = num\n        if first_odd is None and num % 2 != 0:\n            first_odd = num\n        if first_even is not None and first_odd is not None:\n            break\n    if first_even is None or first_odd is None:\n        return None\n    return first_even - first_odd\n```",
+                "refusal": null,
+                "reasoning": null
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 85,
+            "completion_tokens": 128,
+            "total_tokens": 213,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "agent": "test_generator",
+      "llm_call": {
+        "request": {
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "temperature": 0.4,
+          "max_tokens": 3000,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a software test engineer practicing coverage-based unit testing. Do not write any prose, explanation, or reasoning before the code - not even one sentence. Begin your response immediately with the ```python fence; work out expected values silently. Given a Python function, write pytest test cases that together cover every statement, every branch (if/else) and every loop path (zero iterations, one iteration, multiple iterations where applicable) in the function. Import the function with `from solution import diff_first_even_odd`. Use at most 8 test functions total, and do not repeat near-identical cases - pick the minimum set of inputs needed for full coverage. \n\nCRITICAL - derive each expected value from the PROBLEM DESCRIPTION, never by mentally tracing what the given function's code happens to compute. The function may be buggy; a test that merely reproduces the function's own behavior can never catch that bug, and defeats the purpose of testing. Work out the correct answer as if you were solving the original problem from scratch, then check whether the function matches it - don't reason in the other direction. \n\nExpected values are a common source of error: you are prone to mistakes when hand-computing the result of multi-step logic (e.g. dynamic programming, running totals, index arithmetic) for arbitrary inputs. To avoid this, prefer the SIMPLEST input that still exercises each branch/loop path - e.g. a 1x1 or 2x2 matrix instead of a 4x4 one, all-equal or all-zero elements instead of arbitrary distinct numbers, a single iteration instead of five - so the correct expected value is obvious by inspection rather than something you have to simulate mentally. Only use a larger/more complex input on one test if a simple input genuinely cannot reach some branch or loop path. \n\nOutput ONLY the test file contents inside a single ```python fenced code block, with no explanation."
+            },
+            {
+              "role": "user",
+              "content": "Problem description:\nWrite a function to find the difference of first even and odd number of a given list.\n\nFunction under test:\n```python\ndef diff_first_even_odd(lst):\n    first_even = None\n    first_odd = None\n    for num in lst:\n        if first_even is None and num % 2 == 0:\n            first_even = num\n        if first_odd is None and num % 2 != 0:\n            first_odd = num\n        if first_even is not None and first_odd is not None:\n            break\n    if first_even is None or first_odd is None:\n        return None\n    return first_even - first_odd\n```"
+            }
+          ],
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "response_text": "```python\nimport pytest\nfrom solution import diff_first_even_odd\n\ndef test_first_even_then_odd():\n    assert diff_first_even_odd([2, 3]) == -1\n\ndef test_first_odd_then_even():\n    assert diff_first_even_odd([1, 2]) == 1\n\ndef test_even_at_end():\n    assert diff_first_even_odd([1, 3, 5, 2]) == 1\n\ndef test_odd_at_end():\n    assert diff_first_even_odd([2, 4, 6, 1]) == 1\n\ndef test_no_even():\n    assert diff_first_even_odd([1, 3, 5]) is None\n\ndef test_no_odd():\n    assert diff_first_even_odd([2, 4, 6]) is None\n\ndef test_empty_list():\n    assert diff_first_even_odd([]) is None\n\ndef test_both_found_in_middle():\n    assert diff_first_even_odd([1, 2, 3, 4]) == -1\n```",
+        "raw_response": {
+          "id": "gen-1791117388-AlPnmPgKCcPWj3MQ0O0l",
+          "object": "chat.completion",
+          "created": 1791117388,
+          "model": "nvidia/nemotron-3-super-120b-a12b:free",
+          "provider": "Nvidia",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "stop",
+              "message": {
+                "role": "assistant",
+                "content": "```python\nimport pytest\nfrom solution import diff_first_even_odd\n\ndef test_first_even_then_odd():\n    assert diff_first_even_odd([2, 3]) == -1\n\ndef test_first_odd_then_even():\n    assert diff_first_even_odd([1, 2]) == 1\n\ndef test_even_at_end():\n    assert diff_first_even_odd([1, 3, 5, 2]) == 1\n\ndef test_odd_at_end():\n    assert diff_first_even_odd([2, 4, 6, 1]) == 1\n\ndef test_no_even():\n    assert diff_first_even_odd([1, 3, 5]) is None\n\ndef test_no_odd():\n    assert diff_first_even_odd([2, 4, 6]) is None\n\ndef test_empty_list():\n    assert diff_first_even_odd([]) is None\n\ndef test_both_found_in_middle():\n    assert diff_first_even_odd([1, 2, 3, 4]) == -1\n```",
+                "refusal": null,
+                "reasoning": null
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 567,
+            "completion_tokens": 239,
+            "total_tokens": 806,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "agent": "test_executor",
+      "verdict": {
+        "problem_id": "594",
+        "passed": false,
+        "returncode": 1,
+        "stdout": ".......F                                                                 [100%]\n=================================== FAILURES ===================================\n__________________________ test_both_found_in_middle ___________________________\n\n    def test_both_found_in_middle():\n>       assert diff_first_even_odd([1, 2, 3, 4]) == -1\nE       assert 1 == -1\nE        +  where 1 = diff_first_even_odd([1, 2, 3, 4])\n\ntest_solution.py:26: AssertionError\n=========================== short test summary info ============================\nFAILED test_solution.py::test_both_found_in_middle - assert 1 == -1\n1 failed, 7 passed in 0.05s\n",
+        "stderr": "",
+        "coverage_percent": 100.0,
+        "branch_coverage_percent": 100.0,
+        "missing_lines": [],
+        "missing_branches": []
+      }
+    }
+  ],
+  "final_code": "def diff_first_even_odd(lst):\n    first_even = None\n    first_odd = None\n    for num in lst:\n        if first_even is None and num % 2 == 0:\n            first_even = num\n        if first_odd is None and num % 2 != 0:\n            first_odd = num\n        if first_even is not None and first_odd is not None:\n            break\n    if first_even is None or first_odd is None:\n        return None\n    return first_even - first_odd",
+  "final_tests": "import pytest\nfrom solution import diff_first_even_odd\n\ndef test_first_even_then_odd():\n    assert diff_first_even_odd([2, 3]) == -1\n\ndef test_first_odd_then_even():\n    assert diff_first_even_odd([1, 2]) == 1\n\ndef test_even_at_end():\n    assert diff_first_even_odd([1, 3, 5, 2]) == 1\n\ndef test_odd_at_end():\n    assert diff_first_even_odd([2, 4, 6, 1]) == 1\n\ndef test_no_even():\n    assert diff_first_even_odd([1, 3, 5]) is None\n\ndef test_no_odd():\n    assert diff_first_even_odd([2, 4, 6]) is None\n\ndef test_empty_list():\n    assert diff_first_even_odd([]) is None\n\ndef test_both_found_in_middle():\n    assert diff_first_even_odd([1, 2, 3, 4]) == -1",
+  "final_verdict": {
+    "problem_id": "594",
+    "passed": false,
+    "returncode": 1,
+    "stdout": ".......F                                                                 [100%]\n=================================== FAILURES ===================================\n__________________________ test_both_found_in_middle ___________________________\n\n    def test_both_found_in_middle():\n>       assert diff_first_even_odd([1, 2, 3, 4]) == -1\nE       assert 1 == -1\nE        +  where 1 = diff_first_even_odd([1, 2, 3, 4])\n\ntest_solution.py:26: AssertionError\n=========================== short test summary info ============================\nFAILED test_solution.py::test_both_found_in_middle - assert 1 == -1\n1 failed, 7 passed in 0.05s\n",
+    "stderr": "",
+    "coverage_percent": 100.0,
+    "branch_coverage_percent": 100.0,
+    "missing_lines": [],
+    "missing_branches": []
+  },
+  "coverage_repair_attempts": 0
+}
